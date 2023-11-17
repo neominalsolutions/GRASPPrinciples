@@ -12,7 +12,7 @@ namespace GRASPPrinciples._04_InformationExpert
     private List<AccountTransaction> transactions = new List<AccountTransaction>();
 
     public string Number { get; init; }
-    public decimal Balance { get; init; }
+    public decimal Balance { get; private set; }
 
     // public List<AccountTransaction> Transactions { get; set; }
     public bool IsBlocked { get; private set; } // Bloke mi
@@ -25,6 +25,10 @@ namespace GRASPPrinciples._04_InformationExpert
     // Nenslere birbilerine çift taraflı çok gerekmedikçe bağlanmamlı bu davranıştan kaçınılmalı gereksiz yere nesne instanceların program tarfında çekilmesinin önüne geçilmeli ve kodu okunabirliğini azalmasının önüne geçilmelidir. 
     //public Customer Customer { get; set; }
 
+    public void SetBalance(decimal balance)
+    {
+      Balance = balance;
+    }
 
     public Account(string accountNumber)
     {
@@ -35,12 +39,36 @@ namespace GRASPPrinciples._04_InformationExpert
 
     /// <summary>
     /// Para çekme işlemini Account sınıfına devrettik.
+    /// Günlük para çekme limit 100.000
     /// </summary>
     /// <param name="amount"></param>
     public void WithDraw(decimal amount)
     {
+      if (IsBlocked)
+      {
+        throw new Exception("Hesap blokeli para çekilmez");
+      }
+
+      if(amount < 0)
+      {
+        throw new Exception("Miktar pozitid değer olmalıdır");
+      }
+
+      decimal dailyTransactionAmountTotal = transactions.Where( x=> x.ProcessAt.Date == DateTime.Now.Date && x.TransactionType == (int)(TransactionTypes.WithDraw)).Sum(x => x.Amount);
+
+      if((dailyTransactionAmountTotal + amount) > 100000)
+      {
+        throw new Exception("Günlük para çekme limitini aştınız");
+      }
+
+
       transactions.Add(new AccountTransaction(amount,TransactionTypes.WithDraw));
+
+      Balance -= amount;
+
     }
+
+
 
     public void MakeAccountBlocked(string reason)
     {
