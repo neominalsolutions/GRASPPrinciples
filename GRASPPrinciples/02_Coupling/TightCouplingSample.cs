@@ -30,16 +30,17 @@ namespace GRASPPrinciples._02_Coupling
   {
     // bir sınıf başka bir sınıfın referansı direk olarak kullanırsa sınıflar arasında yada moduüller arasında sıkı sıkıya bağlılık oluşur. Bu durumda code refactoring sürecine girmemiz gerekir. 
     private TurkcellSmsProvider emailService;
-    private AdoNetRepository repository;
+    private DapperRepository repository;
 
     public TightCouplingSample()
     {
       emailService = new TurkcellSmsProvider();
-      repository = new AdoNetRepository();
+      repository = new DapperRepository();
     }
 
     public void Handle()
     {
+      repository.Save();
       Console.WriteLine("Handle");
     }
   }

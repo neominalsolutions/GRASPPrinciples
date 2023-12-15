@@ -19,13 +19,15 @@ container.AddTransient<IRepository<Product>, DapperProductRepository>(); // regi
 container.AddTransient<ISmsProvider, SendGridSmsService>();
 //container.AddTransient<ISmsProvider, TurkcelSmsService>();
 
+// merkezi olarak uygulamanın teknoloji bağımlılıklarını tek bir dosyadan yönetebileceğimiz bir yapıdır, IoC 
+
 var provider = container.BuildServiceProvider(); // bunları framework'e tanıt.
 
 //var repo = new AdoNetProductRepository();
 //var smsProvider = new TurkcelSmsService();
 
 // with IoC
-var repo = provider.GetRequiredService<IRepository<Product>>();
+var repo = provider.GetRequiredService<IRepository<Product>>(); // resolve işlemi ilgili register edilen servisin instance'a service provider üzerinden eriştik.
 var smsProvider = provider.GetRequiredService<ISmsProvider>();
 
 

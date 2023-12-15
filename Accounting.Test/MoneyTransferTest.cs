@@ -58,7 +58,7 @@ namespace Accounting.Test
       // act
       account.WithDraw(10000);
       account.WithDraw(70000);
-      //account.WithDraw(50000);
+      account.WithDraw(50000);
 
       // Assert
       Assert.True(account.Balance > 0);

@@ -12,7 +12,7 @@ namespace GRASPPrinciples._04_InformationExpert
     private List<AccountTransaction> transactions = new List<AccountTransaction>();
 
     public string Number { get; init; }
-    public decimal Balance { get; private set; }
+    public decimal Balance { get; private set; } // Müşteri Bakiyesi
 
     // public List<AccountTransaction> Transactions { get; set; }
     public bool IsBlocked { get; private set; } // Bloke mi
@@ -67,8 +67,6 @@ namespace GRASPPrinciples._04_InformationExpert
       Balance -= amount;
 
     }
-
-
 
     public void MakeAccountBlocked(string reason)
     {
